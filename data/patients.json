@@ -1,0 +1,165 @@
+{
+  "p1": {
+    "vitals": [
+      {
+        "heartRate": 72,
+        "bloodPressure": "120/80",
+        "timestamp": 1698798000000
+      }
+    ],
+    "pendingRequests": [
+      "d2"
+    ],
+    "approvedDoctors": [
+      "d1"
+    ],
+    "diagnoses": [
+      {
+        "doctorId": "d1",
+        "notes": "Checkup OK",
+        "prescription": "Vitamin D",
+        "timestamp": 1698798000000
+      }
+    ]
+  },
+  "p2": {
+    "vitals": [
+      {
+        "heartRate": 72,
+        "bloodPressure": "120/80",
+        "timestamp": 1698798000000
+      }
+    ],
+    "pendingRequests": [
+      "d2"
+    ],
+    "approvedDoctors": [
+      "d1"
+    ],
+    "diagnoses": [
+      {
+        "doctorId": "d1",
+        "notes": "Checkup OK",
+        "prescription": "Vitamin D",
+        "timestamp": 1698798000000
+      }
+    ]
+  },
+  "p3": {
+    "vitals": [
+      {
+        "heartRate": 72,
+        "bloodPressure": "120/80",
+        "timestamp": 1698798000000
+      }
+    ],
+    "pendingRequests": [
+      "d2"
+    ],
+    "approvedDoctors": [
+      "d1"
+    ],
+    "diagnoses": [
+      {
+        "doctorId": "d1",
+        "notes": "Checkup OK",
+        "prescription": "Vitamin D",
+        "timestamp": 1698798000000
+      }
+    ]
+  },
+  "68d8a55a-76d0-4e9c-a991-4e8c5b8f748c": {
+    "vitals": [
+      {
+        "heartRate": "70",
+        "bloodPressure": "70/100",
+        "timestamp": 1762120845596
+      },
+      {
+        "heartRate": "70",
+        "bloodPressure": "70/100",
+        "timestamp": 1762120846737
+      },
+      {
+        "heartRate": "70",
+        "bloodPressure": "70/100",
+        "timestamp": 1762120848401
+      },
+      {
+        "heartRate": "70",
+        "bloodPressure": "70/100",
+        "timestamp": 1762120848752
+      },
+      {
+        "heartRate": "70",
+        "bloodPressure": "70/100",
+        "timestamp": 1762120849174
+      },
+      {
+        "heartRate": "70",
+        "bloodPressure": "70/100",
+        "timestamp": 1762120849386
+      }
+    ],
+    "pendingRequests": [
+      "d2"
+    ],
+    "approvedDoctors": [
+      "d1",
+      "b72c0594-1b91-44f8-aec5-0a6c111e270a"
+    ],
+    "diagnoses": []
+  },
+  "fb36d926-d27b-421f-a461-6983225ef7ae": {
+    "vitals": [
+      {
+        "heartRate": "72",
+        "bloodPressure": "120/80",
+        "timestamp": 1762702356062
+      },
+      {
+        "heartRate": "72",
+        "bloodPressure": "120/80",
+        "timestamp": 1762703155579
+      },
+      {
+        "heartRate": "23",
+        "bloodPressure": "45/90",
+        "timestamp": 1762703330821
+      }
+    ],
+    "pendingRequests": [],
+    "approvedDoctors": [
+      "b72c0594-1b91-44f8-aec5-0a6c111e270a"
+    ],
+    "diagnoses": [
+      {
+        "doctorId": "b72c0594-1b91-44f8-aec5-0a6c111e270a",
+        "notes": "This is test report.",
+        "prescription": "Test",
+        "timestamp": 1762714227871
+      }
+    ]
+  },
+  "98dddf19-8678-4132-9b97-92a196ed65bb": {
+    "vitals": [
+      {
+        "heartRate": "82",
+        "bloodPressure": "45/90",
+        "timestamp": 1762723414797
+      }
+    ],
+    "pendingRequests": [],
+    "approvedDoctors": [
+      "b72c0594-1b91-44f8-aec5-0a6c111e270a"
+    ],
+    "diagnoses": [
+      {
+        "doctorId": "b72c0594-1b91-44f8-aec5-0a6c111e270a",
+        "notes": "This is for test report of patient 2.",
+        "prescription": "Prescription",
+        "timestamp": 1762723372011
+      }
+    ]
+  }
+}

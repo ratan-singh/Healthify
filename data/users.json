@@ -1,0 +1,56 @@
+[
+  {
+    "id": "d1",
+    "name": "Dr. Alice",
+    "role": "doctor",
+    "password": "pass123"
+  },
+  {
+    "id": "p1",
+    "name": "Bob",
+    "role": "patient",
+    "password": "word456"
+  },
+  {
+    "id": "d2",
+    "name": "Dr. Ben",
+    "role": "doctor",
+    "password": "123456"
+  },
+  {
+    "id": "p2",
+    "name": "Charlie",
+    "role": "patient",
+    "password": "charlie789"
+  },
+  {
+    "id": "p3",
+    "name": "David",
+    "role": "patient",
+    "password": "david101"
+  },
+  {
+    "id": "68d8a55a-76d0-4e9c-a991-4e8c5b8f748c",
+    "name": "Ashish",
+    "password": "12345",
+    "role": "patient"
+  },
+  {
+    "id": "fb36d926-d27b-421f-a461-6983225ef7ae",
+    "name": "Ratan",
+    "password": "ratan123",
+    "role": "patient"
+  },
+  {
+    "id": "b72c0594-1b91-44f8-aec5-0a6c111e270a",
+    "name": "Dr. Ashish",
+    "password": "qwerty",
+    "role": "doctor"
+  },
+  {
+    "id": "98dddf19-8678-4132-9b97-92a196ed65bb",
+    "name": "patient2",
+    "password": "patient",
+    "role": "patient"
+  }
+]
