@@ -1,30 +1,49 @@
 import { NextResponse } from 'next/server';
-import fs from 'node:fs';
-import path from 'node:path';
 import { v4 as uuidv4 } from 'uuid';
+import { createUser, getUserByEmail } from '@/lib/db';
 
 export async function POST(req: Request) {
-  const { name, password, role } = await req.json();
-  const dataDir = path.join(process.cwd(), 'data');
-  const usersPath = path.join(dataDir, 'users.json');
-  const patientsPath = path.join(dataDir, 'patients.json');
-  const doctorsPath = path.join(dataDir, 'doctors.json');
-  
+  try {
+    const { name, email, password, role } = await req.json();
 
-  const usersData = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
-  const id = uuidv4();
-  usersData.push({ id, name, password, role });
-  fs.writeFileSync(usersPath, JSON.stringify(usersData, null, 2));
-  
-  if (role === 'patient') {
-    const patientsData = JSON.parse(fs.readFileSync(patientsPath, 'utf8'));
-    patientsData[id] = { vitals: [], pendingRequests: [], approvedDoctors: [], diagnoses: [] };
-    fs.writeFileSync(patientsPath, JSON.stringify(patientsData, null, 2));
-  } else if (role === 'doctor') {
-    const doctorsData = JSON.parse(fs.readFileSync(doctorsPath, 'utf8'));
-    doctorsData[id] = { patients: [] };
-    fs.writeFileSync(doctorsPath, JSON.stringify(doctorsData, null, 2));
+    // Validate input
+    if (!name || !email || !password || !role) {
+      return NextResponse.json(
+        { error: 'All fields are required' },
+        { status: 400 }
+      );
+    }
+
+    if (!['patient', 'doctor'].includes(role)) {
+      return NextResponse.json(
+        { error: 'Invalid role' },
+        { status: 400 }
+      );
+    }
+
+    // Check if user already exists
+    const existingUser = await getUserByEmail(email);
+    if (existingUser) {
+      return NextResponse.json(
+        { error: 'User with this email already exists' },
+        { status: 409 }
+      );
+    }
+
+    // Create new user
+    const id = uuidv4();
+    await createUser(id, name, email, password, role);
+
+    return NextResponse.json({ 
+      success: true,
+      message: 'Registered successfully',
+      userId: id 
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    return NextResponse.json(
+      { error: 'Failed to register user' },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json({ message: 'Registered' });
 }

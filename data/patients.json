@@ -161,5 +161,11 @@
         "timestamp": 1762723372011
       }
     ]
+  },
+  "1e39c819-7466-403f-bde6-5d2ea16bd052": {
+    "vitals": [],
+    "pendingRequests": [],
+    "approvedDoctors": [],
+    "diagnoses": []
   }
 }

@@ -1,25 +1,42 @@
 // app/api/patient/[id]/requests/route.ts
 import { NextResponse } from 'next/server';
-import fs from 'node:fs';
-import path from 'node:path';
+import { getPendingRequests, addAccessRequest } from '@/lib/db';
 
 // Pending doctor requests for a patient
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const id = (await params).id;
-  const patients = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/patients.json'), 'utf8'));
-  return NextResponse.json(patients[id]?.pendingRequests || []);
+  try {
+    const id = (await params).id;
+    const requests = await getPendingRequests(id);
+    return NextResponse.json(requests);
+  } catch (error) {
+    console.error('Error fetching pending requests:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch pending requests' },
+      { status: 500 }
+    );
+  }
 }
 
 // Send a request to approve a doctor
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const id = (await params).id;
-  const { doctorId } = await req.json();
-  const patientsPath = path.join(process.cwd(), 'data/patients.json');
-  const patients = JSON.parse(fs.readFileSync(patientsPath, 'utf8'));
-  // Avoid duplicates
-  if (!patients[id].pendingRequests.includes(doctorId) && !patients[id].approvedDoctors.includes(doctorId)) {
-    patients[id].pendingRequests.push(doctorId);
-    fs.writeFileSync(patientsPath, JSON.stringify(patients, null, 2));
+  try {
+    const id = (await params).id;
+    const { doctorId } = await req.json();
+
+    if (!doctorId) {
+      return NextResponse.json(
+        { error: 'Doctor ID is required' },
+        { status: 400 }
+      );
+    }
+
+    await addAccessRequest(id, doctorId);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error adding access request:', error);
+    return NextResponse.json(
+      { error: 'Failed to add access request' },
+      { status: 500 }
+    );
   }
-  return NextResponse.json({ success: true });
 }

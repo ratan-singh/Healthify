@@ -1,20 +1,44 @@
 // app/api/auth/login/route.ts
 import { NextResponse } from 'next/server';
-import fs from 'node:fs';
-import path from 'node:path';
+import { getUserByEmail } from '@/lib/db';
 
 export async function POST(req: Request) {
-  const { name, password } = await req.json();
-  const usersPath = path.join(process.cwd(), 'data/users.json');
-  const usersData = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
-  const user = usersData.find(u => u.name === name && u.password === password);
-  if (!user) {
-    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+  try {
+    const { email, password } = await req.json();
+
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: 'Email and password are required' },
+        { status: 400 }
+      );
+    }
+
+    const user = await getUserByEmail(email);
+    
+    if (!user || user.password !== password) {
+      return NextResponse.json(
+        { error: 'Invalid credentials' },
+        { status: 401 }
+      );
+    }
+
+    const res = NextResponse.json({ 
+      id: user.id, 
+      role: user.role,
+      name: user.name 
+    });
+    
+    res.cookies.set('user', JSON.stringify({ id: user.id, role: user.role }), {
+      httpOnly: true,
+      path: '/'
+    });
+    
+    return res;
+  } catch (error) {
+    console.error('Login error:', error);
+    return NextResponse.json(
+      { error: 'Failed to login' },
+      { status: 500 }
+    );
   }
-  const res = NextResponse.json({ id: user.id, role: user.role });
-  res.cookies.set('user', JSON.stringify({ id: user.id, role: user.role }), {
-    httpOnly: true,
-    path: '/'
-  });
-  return res;
 }

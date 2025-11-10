@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { getUserById } from '@/lib/db';
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,30 +13,24 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Read the users data file
-    const usersPath = path.join(process.cwd(), 'data', 'users.json');
-    const usersData = JSON.parse(fs.readFileSync(usersPath, 'utf-8'));
+    // Search for the patient by ID
+    const patient = await getUserById(patientId);
 
-    // Search for the patient by ID (must have role 'patient')
-    const patient = usersData.find((user: { id: string; role: string }) => 
-      user.id === patientId && user.role === 'patient'
-    );
-
-    if (!patient) {
+    if (!patient || patient.role !== 'patient') {
       return NextResponse.json(
         { error: 'Patient not found' },
         { status: 404 }
       );
     }
 
-    // Return the patient data
+    // Return the patient data (exclude password)
     return NextResponse.json({
       success: true,
       patient: {
         id: patient.id,
         name: patient.name,
+        email: patient.email,
         role: patient.role,
-        // Exclude password for security
       }
     });
 

@@ -52,5 +52,11 @@
     "name": "patient2",
     "password": "patient",
     "role": "patient"
+  },
+  {
+    "id": "1e39c819-7466-403f-bde6-5d2ea16bd052",
+    "name": "Aourabando",
+    "password": "test123",
+    "role": "patient"
   }
 ]
