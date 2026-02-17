@@ -2,11 +2,25 @@
 import { NextResponse } from 'next/server';
 import { getPatientVitals, addVital } from '@/lib/db';
 
+interface VitalRow {
+  heart_rate: string;
+  blood_pressure: string;
+  timestamp: string | number;
+}
+
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const id = (await params).id;
     const vitals = await getPatientVitals(id);
-    return NextResponse.json(vitals);
+    
+    // Transform snake_case to camelCase and convert timestamp to number
+    const formattedVitals = vitals.map((vital: VitalRow) => ({
+      heartRate: vital.heart_rate,
+      bloodPressure: vital.blood_pressure,
+      timestamp: Number(vital.timestamp)
+    }));
+    
+    return NextResponse.json(formattedVitals);
   } catch (error) {
     console.error('Error fetching vitals:', error);
     return NextResponse.json(
