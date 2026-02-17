@@ -66,6 +66,24 @@ export async function initializeDatabase() {
       )
     `;
 
+    // Create ecg_data table
+    await sql`
+      CREATE TABLE IF NOT EXISTS ecg_data (
+        id SERIAL PRIMARY KEY,
+        device_id TEXT NOT NULL,
+        timestamp TEXT NOT NULL,
+        sampling_rate INTEGER NOT NULL,
+        ecg_samples JSONB NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+
+    // Create index for faster queries
+    await sql`
+      CREATE INDEX IF NOT EXISTS idx_ecg_device_timestamp 
+      ON ecg_data(device_id, timestamp)
+    `;
+
     console.log('Database tables initialized successfully');
     return { success: true };
   } catch (error) {
@@ -241,6 +259,43 @@ export async function revokeDoctor(patientId: string, doctorId: string) {
     return { success: true };
   } catch (error) {
     console.error('Error revoking doctor:', error);
+    throw error;
+  }
+}
+
+// Helper function to store ECG data
+export async function storeEcgData(
+  deviceId: string,
+  timestamp: string,
+  samplingRate: number,
+  ecgSamples: number[]
+) {
+  try {
+    const result = await sql`
+      INSERT INTO ecg_data (device_id, timestamp, sampling_rate, ecg_samples)
+      VALUES (${deviceId}, ${timestamp}, ${samplingRate}, ${JSON.stringify(ecgSamples)})
+      RETURNING id, device_id, timestamp, sampling_rate, created_at
+    `;
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error storing ECG data:', error);
+    throw error;
+  }
+}
+
+// Helper function to get ECG data by device
+export async function getEcgDataByDevice(deviceId: string, limit: number = 100) {
+  try {
+    const result = await sql`
+      SELECT id, device_id, timestamp, sampling_rate, ecg_samples, created_at
+      FROM ecg_data
+      WHERE device_id = ${deviceId}
+      ORDER BY created_at DESC
+      LIMIT ${limit}
+    `;
+    return result.rows;
+  } catch (error) {
+    console.error('Error fetching ECG data:', error);
     throw error;
   }
 }
