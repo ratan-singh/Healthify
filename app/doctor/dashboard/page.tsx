@@ -595,7 +595,7 @@ export default function DoctorDashboard() {
 
                     <Card className="p-6">
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                        Recent Diagnoses
+                        Recent Diagnosis
                       </h3>
                       {patientData?.diagnoses.length ? (
                         <div className="space-y-3">
